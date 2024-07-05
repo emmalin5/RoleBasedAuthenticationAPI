@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace auth.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    //[Authorize(Roles ="Admin")]
+    [Authorize(Policy = "AtLeast21")]
     [Route("api/[controller]")]
     [ApiController]
 

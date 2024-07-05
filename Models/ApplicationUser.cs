@@ -5,5 +5,7 @@ namespace auth.Models
 {
     public class ApplicationUser:IdentityUser
     {
+
+        public DateTime DateOfBirth { get; set; } 
     }
 }

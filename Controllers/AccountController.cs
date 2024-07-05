@@ -42,7 +42,8 @@ namespace auth.Controllers
             {
                 UserName = registerUser.Email,
                 Email = registerUser.Email,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                DateOfBirth = registerUser.DateofBirth
             };
 
            

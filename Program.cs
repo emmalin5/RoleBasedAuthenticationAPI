@@ -1,6 +1,8 @@
 using auth;
 using auth.Models;
+using auth.Models.Policy;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -29,7 +31,7 @@ builder.Services.AddAuthentication(options=>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(x =>
-{
+    {
     x.RequireHttpsMetadata = false;
     x.SaveToken = true;
     x.TokenValidationParameters = new TokenValidationParameters
@@ -41,9 +43,17 @@ builder.Services.AddAuthentication(options=>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
        
     };
+
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AtLeast21", policy =>
+        policy.Requirements.Add(new MinimumAgeRequirement(21)));
+});
 
+// Register the custom authorization handler
+builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeHandler>();
 //Swagger Style Change
 builder.Services.AddSwaggerGen(option =>
 {
